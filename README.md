@@ -1,29 +1,23 @@
-# AI Voice & Text Support Ticket Topic Discovery Engine
+# Support Ticket Topic Discovery & CSAT Diagnostics
 
-An unsupervised NLP embedding and clustering pipeline designed to ingest unstructured customer service transcripts (voice calls, live chat, email) and automatically group complaints into actionable product defect trends.
+An NLP clustering workflow that groups unstructured customer support logs (chat, email, voice transcripts) into specific product issue buckets and tracks SLA and CSAT impact.
 
-## Overview
-Customer support teams manually tag incoming tickets with generic classifications (e.g. "Bug", "Account Issue"), masking acute product outages and regressions. This engine uses TF-IDF n-gram vectorization and K-Means clustering to parse 50,000+ unstructured interactions, exposing underlying operational bottlenecks and CSAT drop drivers.
+## Problem Context
+Generic support tags like "Bug" or "Account Issue" hide recurring product regressions until ticket volume spikes. This project pairs SQL SLA/CSAT rollups with bi-gram TF-IDF and K-Means clustering to surface specific root-cause phrases from raw ticket text.
 
-## Project Structure
-- `ticket_volume_aggregation.sql`: Production SQL pipeline calculating first-contact resolution (FCR), SLA breach frequencies, and CSAT scores across extracted topic clusters.
-- `topic_discovery_nlp_engine.py`: Python NLP pipeline transforming raw text/voice transcripts into feature vectors and surfacing top discriminative root-cause keywords.
-- `requirements.txt`: Python package dependencies.
+## Files
+- `ticket_volume_aggregation.sql`: Computes first-contact resolution (FCR), SLA breach rates, and CSAT scores by topic cluster.
+- `topic_discovery_nlp_engine.py`: Vectorizes 50k+ unstructured transcripts with bi-gram TF-IDF and extracts top keywords per cluster.
+- `requirements.txt`: Python dependencies.
 
-## Key Analytical Workflows
-1. **Unstructured Text Ingestion:** Preprocesses multi-channel inputs (ASR voice transcript logs, live chat sessions, support tickets).
-2. **Feature Extraction:** Implements bi-gram TF-IDF (`ngram_range=(1,2)`) to preserve domain phrases (e.g., "apple pay", "force closes", "invalid otp").
-3. **Cluster Taxonomy:** Automatically partitions unstructured logs into 5 core product friction areas with associated ticket volumes and CSAT sentiment impacts.
+## How It Works
+1. **Text Normalization:** Cleans raw multi-channel support transcripts and preserves two-word product phrases (e.g., "apple pay", "invalid otp").
+2. **Unsupervised Grouping:** Clusters tickets into 5 operational friction themes without relying on manual agent tags.
+3. **SLA & CSAT Impact:** Joins cluster assignments against resolution timestamps to highlight which issues hurt customer satisfaction most.
 
-## How to Run
+## Run Locally
 
-```bash
-# Clone the repository
-git clone [https://github.com/puneetgoswami1/ai-support-ticket-topic-discovery.git](https://github.com/puneetgoswami1/ai-support-ticket-topic-discovery.git)
-cd ai-support-ticket-topic-discovery
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run NLP topic discovery engine
-python topic_discovery_nlp_engine.py
+    git clone https://github.com/puneetgoswami1/ai-support-ticket-topic-discovery.git
+    cd ai-support-ticket-topic-discovery
+    pip install -r requirements.txt
+    python topic_discovery_nlp_engine.py
